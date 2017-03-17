@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="fastd," />
 
 
 
@@ -87,12 +87,22 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="// 黄总">
-<meta property="og:url" content="http://janhuang.github.io/index.html">
+<meta name="description" content="在 FastD 3.1 框架中，内置多种网络模式，但最终都会转化为 HTTP 协议进行解析，因为开发模式只有一种，就是我们的编码，如果我们每种网络模式都编写一种代码，那么在维护，公用上是非常不方便的，起码在一个项目中操作是，
+如果能够做到无痕切换或者兼容，那无疑是最省人力和功夫的，但是方便的前提是需要牺牲一小部分的性能，但对比与便利性，我个人认为，这值得牺牲。
+HTTP普遍的开发模式大部分是基于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="network">
+<meta property="og:url" content="http://janhuang.github.io/2017/03/17/network/index.html">
 <meta property="og:site_name" content="// 黄总">
+<meta property="og:description" content="在 FastD 3.1 框架中，内置多种网络模式，但最终都会转化为 HTTP 协议进行解析，因为开发模式只有一种，就是我们的编码，如果我们每种网络模式都编写一种代码，那么在维护，公用上是非常不方便的，起码在一个项目中操作是，
+如果能够做到无痕切换或者兼容，那无疑是最省人力和功夫的，但是方便的前提是需要牺牲一小部分的性能，但对比与便利性，我个人认为，这值得牺牲。
+HTTP普遍的开发模式大部分是基于">
+<meta property="og:updated_time" content="2017-03-17T10:07:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="// 黄总">
+<meta name="twitter:title" content="network">
+<meta name="twitter:description" content="在 FastD 3.1 框架中，内置多种网络模式，但最终都会转化为 HTTP 协议进行解析，因为开发模式只有一种，就是我们的编码，如果我们每种网络模式都编写一种代码，那么在维护，公用上是非常不方便的，起码在一个项目中操作是，
+如果能够做到无痕切换或者兼容，那无疑是最省人力和功夫的，但是方便的前提是需要牺牲一小部分的性能，但对比与便利性，我个人认为，这值得牺牲。
+HTTP普遍的开发模式大部分是基于">
 
 
 
@@ -120,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://janhuang.github.io/"/>
+  <link rel="canonical" href="http://janhuang.github.io/2017/03/17/network/"/>
 
 
 
 
 
-  <title> // 黄总 </title>
+  <title> network | // 黄总 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -151,9 +161,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -246,9 +254,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -278,10 +286,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2017/03/17/network/" itemprop="url">
-                  network
-                </a>
+                network
               
             
           </h1>
@@ -342,9 +347,7 @@
       
 
       
-        
-          
-            <p>在 FastD 3.1 框架中，内置多种网络模式，但最终都会转化为 HTTP 协议进行解析，因为开发模式只有一种，就是我们的编码，如果我们每种网络模式都编写一种代码，那么在维护，公用上是非常不方便的，起码在一个项目中操作是，</p>
+        <p>在 FastD 3.1 框架中，内置多种网络模式，但最终都会转化为 HTTP 协议进行解析，因为开发模式只有一种，就是我们的编码，如果我们每种网络模式都编写一种代码，那么在维护，公用上是非常不方便的，起码在一个项目中操作是，</p>
 <p>如果能够做到无痕切换或者兼容，那无疑是最省人力和功夫的，但是方便的前提是需要牺牲一小部分的性能，但对比与便利性，我个人认为，这值得牺牲。</p>
 <h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><p>普遍的开发模式大部分是基于 Nginx，Apache HTTP服务器进行开发，也可能是一贯的模式，限制了大部分的思维和想法。直到有人用 PHP 编写 Web 服务器之后，workman，swoole 的出现，打破了这种所谓传统的模式。</p>
 <p>PHP 本身内置了 Web 服务器，不依赖 nginx， 不依赖 apache，非常方便，适用于开发环境，暂时不建议用于生产。</p>
@@ -358,411 +361,72 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'http://0.0.0.0:9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\HTTPServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
 <p><code>\FastD\Servitization\Server\HTTPServer</code> 作为框架中内置的 HTTP Server，通过命令 <code>php bin/server start</code> 启动 HTTP 服务器。</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/16/fastd/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="黄总">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="// 黄总">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/16/fastd/" itemprop="url">
-                  fastd
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T13:50:19+08:00">
-                2017-03-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/fastd/" rel="tag"># fastd</a>
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/16/fastd/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/fastd/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
         
-          
-            <h2 id="FastD-框架简介"><a href="#FastD-框架简介" class="headerlink" title="FastD 框架简介"></a>FastD 框架简介</h2><p>FastD 意在创造一个简单，一用的 API 框架，注重应用逻辑实现。</p>
-<h3 id="使用文档"><a href="#使用文档" class="headerlink" title="使用文档"></a>使用文档</h3><ul>
-<li><a href="https://github.com/JanHuang/fastD/blob/master/docs/zh_CN/readme.md" target="_blank" rel="external">简体中文</a></li>
-</ul>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>由于 FastD 是可运行在 FPM 和 Swoole 之上，在 FPM 运行环境下，生命周期与普通的 PHP 是一致的。</p>
-<p>而那么在 Swoole 运行环境当中，则是运行在内存当中，常规的 PHP 开发者都没有很好的内存进行清理管理，所以若是运行在 Swoole 环境上，则需要对无用的数据进行清理，对异常进行处理，清除 exit/die 等操作。</p>
-<h4 id="启动-引导"><a href="#启动-引导" class="headerlink" title="启动/引导"></a>启动/引导</h4><p>当应用启动 bootstrap 方法是，程序正式进入初始化阶段，讲核心服务，配置注册到容器(应用)当中.</p>
-<ol>
-<li>加载应用配置</li>
-<li>注册系统服务与自定义服务</li>
-<li>加载路由</li>
-<li>标记已引导</li>
-</ol>
-<h4 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h4><p>当应用接收到用户请求，会先通过 Http 组件进行处理，然后传递到路由调度器中进行调度处理。</p>
-<ol>
-<li>接收请求</li>
-<li>匹配路由</li>
-<li>处理中间件</li>
-<li>返回处理</li>
-</ol>
-<h4 id="响应"><a href="#响应" class="headerlink" title="响应"></a>响应</h4><p>处理完请求后，应用接收返回，通过处理检验包装后，返回给客户端。</p>
-<ol>
-<li>接收处理返回</li>
-<li>返回客户端(输出)</li>
-</ol>
-<h4 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h4><p>在 FPM 模式下，当应用响应完成后，FPM 会自动清理或重置所有信息，而在 Swoole 运行环境下，则会将部分一次性数据进行重置，内部逻辑则不会进行清理，因此需要在逻辑处理中进行数据清理。</p>
-<ol>
-<li>清理数据</li>
-<li>日志记录</li>
-</ol>
-<h2 id="支持"><a href="#支持" class="headerlink" title="支持"></a>支持</h2><p>如果你在使用中遇到问题，请联系: <a href="mailto:bboyjanhuang@gmail.com" target="_blank" rel="external">bboyjanhuang@gmail.com</a>. 微博: <a href="http://weibo.com/ecbboyjan" target="_blank" rel="external">编码侠</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/16/learn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="黄总">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="// 黄总">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/03/16/fastd/" rel="next" title="fastd">
+                <i class="fa fa-chevron-left"></i> fastd
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2017/03/16/learn/" itemprop="url">
-                  learn
-                </a>
-              
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T12:16:14+08:00">
-                2017-03-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/16/learn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/learn/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h2 id="PHP-知识"><a href="#PHP-知识" class="headerlink" title="PHP 知识"></a>PHP 知识</h2><ul>
-<li>基础HTML、JavaScript、CSS知识</li>
-<li>环境配置，内置 Web 服务器</li>
-<li>PSR 知识</li>
-<li>Git 版本管理</li>
-<li>Composer 与 Packagist</li>
-<li>代码注释</li>
-<li>PEAR</li>
-<li>命名空间</li>
-<li>日期相关</li>
-<li>设计模式</li>
-<li>依赖注入、容器</li>
-<li>数据库操作、注入</li>
-<li>PHP 模板??? (能够深入PHP，而不仅仅在套模板上)</li>
-<li>错误与异常</li>
-<li>web 安全，密码哈希</li>
-<li>CLI 命令行</li>
-<li>配置文件</li>
-<li>多环境配置，测试环境，开发环境，生产环境</li>
-<li>应用测试，单元测试，测试驱动</li>
-<li>持续集成</li>
-<li>服务与部署、PaaP 服务</li>
-<li>Vagrant</li>
-<li>缓存，OPcode，文件缓存，redis 缓存</li>
-<li>开源框架、开源组件<ul>
-<li><a href="https://github.com/symfony/symfony" target="_blank" rel="external">Symfony</a></li>
-<li><a href="https://github.com/laravel/laravel" target="_blank" rel="external">Laravel</a></li>
-<li><a href="https://github.com/JanHuang/fastD" target="_blank" rel="external">FastD</a></li>
-<li><a href="https://github.com/slimphp/Slim" target="_blank" rel="external">Slim</a></li>
-<li><a href="https://github.com/cakephp/cakephp" target="_blank" rel="external">cakePHP</a></li>
-</ul>
-</li>
-<li>热门社区，Github</li>
-<li>网络编程 <a href="http://www.swoole.com/" target="_blank" rel="external">Swoole</a></li>
-<li>其他语言学习，go、python、lua、C/C++</li>
-<li>PHP扩展开发</li>
-<li>架构基础，理论</li>
-<li>分布式概念</li>
-<li>服务化概念<ul>
-<li>实践 RPC </li>
-</ul>
-</li>
-</ul>
-<h2 id="运维知识"><a href="#运维知识" class="headerlink" title="运维知识"></a>运维知识</h2><ul>
-<li>linux 环境搭建，centos，ubuntu，arch</li>
-<li>基本文件目录管理命令</li>
-<li>压缩打包命令</li>
-<li>挂载命令</li>
-<li>vim编辑器使用</li>
-<li>磁盘管理命令</li>
-<li>用户管理</li>
-<li>权限管理</li>
-<li>进程管理</li>
-<li>计划任务</li>
-<li>服务管理</li>
-<li>系统管理</li>
-<li>FTP, SFTP</li>
-<li>shell编程</li>
-<li>lnmp 环境部署<ul>
-<li>php</li>
-<li>nginx</li>
-<li>mysql</li>
-</ul>
-</li>
-<li>nginx web配置</li>
-<li>网络管理,抓板</li>
-<li>DNS，LVS</li>
-<li>TCP/IP</li>
-<li>虚拟化，docker</li>
-<li>自动化工具 Puppet，ansible</li>
-<li>系统工具 SaltStack</li>
-<li>监控工具 zabbix，Cacti</li>
-<li>安全 iptables</li>
-<li>配置管理 CMDB</li>
-<li>内核配置及优化</li>
-<li>Linux C</li>
-<li>硬件</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
           
           </div>
@@ -770,6 +434,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/17/network/"
+           data-title="network" data-url="http://janhuang.github.io/2017/03/17/network/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -789,8 +461,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -843,6 +524,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP"><span class="nav-number">1.</span> <span class="nav-text">HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Swoole-HTTP-Server"><span class="nav-number">1.1.</span> <span class="nav-text">Swoole HTTP Server</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -948,6 +645,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
