@@ -102,7 +102,7 @@ QConf 的架构: QConf架构
 QConf 的架构: QConf架构
 除了 QConf 本身提供的工具之外，我们用到了一个有掌阅科技开发的 zkdash zook">
 <meta property="og:image" content="http://www.uml.org.cn/pzgl/images/201612073.jpg">
-<meta property="og:updated_time" content="2017-04-05T05:08:04.000Z">
+<meta property="og:updated_time" content="2017-04-05T05:10:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="qconf">
 <meta name="twitter:description" content="今天来跟大家分享的是奇虎360开源的 QConf 配置中心。
@@ -362,7 +362,7 @@ QConf 的架构: QConf架构
 <p>除了 QConf 本身提供的工具之外，我们用到了一个有掌阅科技开发的 <a href="https://github.com/ireaderlab/zkdash" target="_blank" rel="external">zkdash</a> zookeeper 管理工具。</p>
 <p>个人理解: </p>
 <p>QConf 可以说是一个 zookeeper 的客户端，通过 agent 去 watch zookeeper 的变化，数据存在本机，当 zookeeper 发生变化是，自动改变本地数据，来达到同步更新的效果。</p>
-<p>[<img src="http://www.uml.org.cn/pzgl/images/201612073.jpg" alt="结构">]</p>
+<p><img src="http://www.uml.org.cn/pzgl/images/201612073.jpg" alt="结构"></p>
 <p>这也就是为什么 QConf 需要搭配 zookeeper 去使用的原因之一吧。</p>
 <h3 id="QConf-服务端"><a href="#QConf-服务端" class="headerlink" title="QConf 服务端"></a>QConf 服务端</h3><p>QConf使用ZooKeeper集群作为服务端提供服务。众所周知，ZooKeeper是一套分布式应用程序协调服务，根据上面提到的对配置内容的定位，我们认为可以将单条配置内容直接存储在ZooKeeper的一个ZNode上，并利用ZooKeeper的Watch监听功能实现配置变化时对客户端的及时通知。 按照ZooKeeper的设计目标，其只提供最基础的功能，包括顺序一致，原子性，单一系统镜像，可靠性和及时性。</p>
 <p>我们选择Zookeeper还因为它有如下特点：</p>
@@ -425,7 +425,7 @@ QConf 的架构: QConf架构
 <p>修改监听的 host 地址: </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">74 def main():</div><div class="line">75     &quot;&quot;&quot;主程序入口</div><div class="line">76     &quot;&quot;&quot;</div><div class="line">77     logger.init_logger(LOG_ITEMS, suffix=OPTIONS.port)</div><div class="line">78     application = Application()</div><div class="line">79     http_server = tornado.httpserver.HTTPServer(application,</div><div class="line">80                                                 xheaders=True)</div><div class="line">81     http_server.listen(OPTIONS.port, address=&quot;输入你需要监听的地址&quot;) </div><div class="line">82     tornado.ioloop.IOLoop.instance().start()</div><div class="line">83</div></pre></td></tr></table></figure>
 <p>address 是新增的 host 参数。本身是没有的</p>
-<p>恭喜你，你已经构建完自己的配置中心了。接下来需要做的是，提高性能，和稳定性，扩展 zookeeper。一入门，接下来，自己走吧。</p>
+<p>恭喜你，你已经构建完自己的配置中心了。接下来需要做的是，提高性能，和稳定性，扩展 zookeeper。我只能帮你到这里了，接下来的路，自己走吧。</p>
 
       
     </div>
