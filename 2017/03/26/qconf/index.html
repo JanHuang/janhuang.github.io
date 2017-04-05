@@ -1,0 +1,779 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="configuration," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="今天来跟大家分享的是奇虎360开源的 QConf 配置中心。
+为什么我们需要做这么一件事情?
+因为遇到了，当业务分布较广，配置分布较广的时候，就会很容易地出现一些问题，比如做了负载均衡，需要调整一下应用配置。刚好改漏了一台机，就偶尔出现一些问题，排查起来也是很吃力的。
+QConf 的架构: QConf架构
+除了 QConf 本身提供的工具之外，我们用到了一个有掌阅科技开发的 zkdash zook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="qconf">
+<meta property="og:url" content="http://janhuang.github.io/2017/03/26/qconf/index.html">
+<meta property="og:site_name" content="// 黄总">
+<meta property="og:description" content="今天来跟大家分享的是奇虎360开源的 QConf 配置中心。
+为什么我们需要做这么一件事情?
+因为遇到了，当业务分布较广，配置分布较广的时候，就会很容易地出现一些问题，比如做了负载均衡，需要调整一下应用配置。刚好改漏了一台机，就偶尔出现一些问题，排查起来也是很吃力的。
+QConf 的架构: QConf架构
+除了 QConf 本身提供的工具之外，我们用到了一个有掌阅科技开发的 zkdash zook">
+<meta property="og:image" content="http://www.uml.org.cn/pzgl/images/201612073.jpg">
+<meta property="og:updated_time" content="2017-04-05T05:08:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="qconf">
+<meta name="twitter:description" content="今天来跟大家分享的是奇虎360开源的 QConf 配置中心。
+为什么我们需要做这么一件事情?
+因为遇到了，当业务分布较广，配置分布较广的时候，就会很容易地出现一些问题，比如做了负载均衡，需要调整一下应用配置。刚好改漏了一台机，就偶尔出现一些问题，排查起来也是很吃力的。
+QConf 的架构: QConf架构
+除了 QConf 本身提供的工具之外，我们用到了一个有掌阅科技开发的 zkdash zook">
+<meta name="twitter:image" content="http://www.uml.org.cn/pzgl/images/201612073.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '5381324',
+      author: '黄总大大'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://janhuang.github.io/2017/03/26/qconf/"/>
+
+
+
+
+
+  <title> qconf | // 黄总 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">// 黄总</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/26/qconf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="黄总">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="// 黄总">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                qconf
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-26T12:08:39+08:00">
+                2017-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/26/qconf/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/26/qconf/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天来跟大家分享的是奇虎360开源的 <a href="https://github.com/Qihoo360/QConf" target="_blank" rel="external">QConf</a> 配置中心。</p>
+<p>为什么我们需要做这么一件事情?</p>
+<p>因为遇到了，当业务分布较广，配置分布较广的时候，就会很容易地出现一些问题，比如做了负载均衡，需要调整一下应用配置。刚好改漏了一台机，就偶尔出现一些问题，排查起来也是很吃力的。</p>
+<p>QConf 的架构: <a href="https://github.com/Qihoo360/QConf/wiki/QConf-%E6%9E%B6%E6%9E%84" target="_blank" rel="external">QConf架构</a></p>
+<p>除了 QConf 本身提供的工具之外，我们用到了一个有掌阅科技开发的 <a href="https://github.com/ireaderlab/zkdash" target="_blank" rel="external">zkdash</a> zookeeper 管理工具。</p>
+<p>个人理解: </p>
+<p>QConf 可以说是一个 zookeeper 的客户端，通过 agent 去 watch zookeeper 的变化，数据存在本机，当 zookeeper 发生变化是，自动改变本地数据，来达到同步更新的效果。</p>
+<p>[<img src="http://www.uml.org.cn/pzgl/images/201612073.jpg" alt="结构">]</p>
+<p>这也就是为什么 QConf 需要搭配 zookeeper 去使用的原因之一吧。</p>
+<h3 id="QConf-服务端"><a href="#QConf-服务端" class="headerlink" title="QConf 服务端"></a>QConf 服务端</h3><p>QConf使用ZooKeeper集群作为服务端提供服务。众所周知，ZooKeeper是一套分布式应用程序协调服务，根据上面提到的对配置内容的定位，我们认为可以将单条配置内容直接存储在ZooKeeper的一个ZNode上，并利用ZooKeeper的Watch监听功能实现配置变化时对客户端的及时通知。 按照ZooKeeper的设计目标，其只提供最基础的功能，包括顺序一致，原子性，单一系统镜像，可靠性和及时性。</p>
+<p>我们选择Zookeeper还因为它有如下特点：</p>
+<p>1、类文件系统的节点组织</p>
+<p>2、稳定，无单点问题</p>
+<p>3、订阅通知机制</p>
+<p>关于Zookeeper，更多见：<a href="https://zookeeper.apache.org/" target="_blank" rel="external">https://zookeeper.apache.org/</a></p>
+<h3 id="QConf-客户端"><a href="#QConf-客户端" class="headerlink" title="QConf 客户端"></a>QConf 客户端</h3><p>因为ZooKeeper在接口方面只提供了非常基本的操作，并且其客户端接口原始，所以我们需要在QConf的客户端部分解决如下问题：</p>
+<p>1、降低与ZooKeeper的链接数 原生的ZooKeeper客户端中，所有需要获取配置的进程都需要与ZooKeeper保持长连接，在生产环境中每个客户端机器可能都会有上百个进程需要访问数据，这对ZooKeeper的压力非常大而且也是不必要的。</p>
+<p>2、本地缓存 当然我们不希望客户端进程每次需要数据都走网络获取，所以需要维护一份客户端缓存，仅在配置变化时更新。</p>
+<p>3、容错 当进程死掉，网络终端，机器重启等异常情况发生时，我们希望能尽可能的提供可靠的配置获取服务。</p>
+<p>4、多语言版本接口 目前提供的语言版本包括：c，php，java，python，go，lua，shell。</p>
+<p>5、配置更新及时 可以秒级同步到所有客户端机器。</p>
+<p>6、高效的配置读取 内存级的访问速度。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>了解完基础的知识和原理，就开始动手实践想法和操作吧，理论要和实践结合，不然就瞎扯淡了。</p>
+<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><p>Linux: Ubuntu 16.04</p>
+<h4 id="安装-zookeeper"><a href="#安装-zookeeper" class="headerlink" title="安装 zookeeper"></a>安装 zookeeper</h4><p>安装包地址: <a href="http://zookeeper.apache.org/releases.html" target="_blank" rel="external">zookeeper</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo wget http://apache.stu.edu.tw/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz</div><div class="line">$ sudo tar -zxvf zookeeper-3.4.9.tar.gz</div></pre></td></tr></table></figure>
+<p>解压完成后，是可以直接运行 zkServer 的，但是需要配置自己的基础信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd zookeeper-3.4.9</div><div class="line">$ sudo cp conf/zoo_sample.cfg conf/zoo.cfg</div></pre></td></tr></table></figure>
+<p>启动 zkServer </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd ../</div><div class="line">$ ./bin/zkServer.sh start</div></pre></td></tr></table></figure>
+<p>默认监听: <code>0.0.0.0:2181</code></p>
+<p>测试服务是否启动: <code>telnet 127.0.0.1 2181</code> 输入 <code>stat</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Zookeeper version: 3.4.9-1757313, built on 08/23/2016 06:50 GMT</div><div class="line">Clients:</div><div class="line">  xxx</div><div class="line"></div><div class="line">Latency min/avg/max: 0/0/51</div><div class="line">Received: 252717</div><div class="line">Sent: 252716</div><div class="line">Connections: 5</div><div class="line">Outstanding: 0</div><div class="line">Zxid: 0x13</div><div class="line">Mode: standalone</div><div class="line">Node count: 10</div></pre></td></tr></table></figure>
+<p>会输出上述信息，服务器启动成功.</p>
+<p>然后创建一下 zookeeper 测试数据: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sh zkCli.sh</div><div class="line"></div><div class="line">    create /demo demo</div><div class="line">    create /demo/confs confs</div><div class="line">    create /demo/confs/conf1 111111111111111111111</div><div class="line">    create /demo/confs/conf2 222222222222222222222</div><div class="line">    create /demo/confs/conf3 333333333333333333333</div></pre></td></tr></table></figure>
+<h4 id="QConf"><a href="#QConf" class="headerlink" title="QConf"></a>QConf</h4><p>安装方式可以查看官方 <a href="https://github.com/Qihoo360/QConf/wiki/QConf-%E7%AE%80%E6%98%93%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BD%BF%E7%94%A8" target="_blank" rel="external">wiki</a></p>
+<p>安装 <a href="https://github.com/Qihoo360/QConf/wiki/FAQ" target="_blank" rel="external">FAQ</a></p>
+<p>安装完 qconf 后，进入 qconf 安装目录，调整 idc.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd conf/</div><div class="line">$ sudo vim idc.conf</div></pre></td></tr></table></figure>
+<p>输入自己的 zookeeper 服务器地址，多个用 <code>,</code> 隔开: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#[zookeeper]</div><div class="line">############################################################################</div><div class="line">#                             QCONF config                                 #</div><div class="line">############################################################################</div><div class="line"># all the zookeeper host configuration.</div><div class="line">#[zookeeper]</div><div class="line">zookeeper.test=zookeeper host</div></pre></td></tr></table></figure>
+<p>保存即可。</p>
+<p>启动 QConf agent。</p>
+<blockquote>
+<p>在 ubuntu 下使用 bash 去启动</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo bash ./bin/agent-cmd.sh start</div></pre></td></tr></table></figure>
+<p>启动成功，查看 QConf 命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">qconf get_conf /demo/confs/conf1</div><div class="line">qconf get_batch_keys /demo/confs</div></pre></td></tr></table></figure>
+<p>如果返回对应的信息，那几说明可以正常获取数据了。如果失败，就去 logs/ 目录查询错误信息，对应修改。</p>
+<h5 id="安装-PHP-扩展"><a href="#安装-PHP-扩展" class="headerlink" title="安装 PHP 扩展"></a>安装 PHP 扩展</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/usr/local/php/bin/phpize</div><div class="line">./configure --with-php-config=/usr/local/php/bin/php-config --with-libqconf-dir=/usr/local/qconf/include --enable-static LDFLAGS=/usr/local/qconf/lib/libqconf.a</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>qconf 配置在 qconf 安装的目录中，根据路径找到对应的依赖包即可。</p>
+<p>安装完后，添加到 php.ini，使用 <code>php --ini</code> 查看配置文件位置。</p>
+<p>查看扩展安装: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php -m | grep qconf</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/Qihoo360/QConf/wiki/QConf-PHP-Doc" target="_blank" rel="external">QConf 操作 API</a></p>
+<p>安装完 QConf 和 zookeeper，安装我们的管理后台。</p>
+<h4 id="zkdash"><a href="#zkdash" class="headerlink" title="zkdash"></a>zkdash</h4><blockquote>
+<p>需要 Python &gt;= 2.7，如果是 centos65 的用户，需要升级自己的 Python 版本，升级方法请看: <a href="http://ruter.sundaystart.net/2015/12/03/Update-python/" target="_blank" rel="external">Python升级</a></p>
+</blockquote>
+<p>地址: <a href="https://github.com/ireaderlab/zkdash" target="_blank" rel="external">zkdash</a></p>
+<p>安装完 zkdash，配置对应节点，进行管理即可。</p>
+<blockquote>
+<p>zkdash Web管理服务默认是全网公开访问的，需要修改监听host和端口，修改方式</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo vim init.py</div></pre></td></tr></table></figure>
+<p>修改监听的 host 地址: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">74 def main():</div><div class="line">75     &quot;&quot;&quot;主程序入口</div><div class="line">76     &quot;&quot;&quot;</div><div class="line">77     logger.init_logger(LOG_ITEMS, suffix=OPTIONS.port)</div><div class="line">78     application = Application()</div><div class="line">79     http_server = tornado.httpserver.HTTPServer(application,</div><div class="line">80                                                 xheaders=True)</div><div class="line">81     http_server.listen(OPTIONS.port, address=&quot;输入你需要监听的地址&quot;) </div><div class="line">82     tornado.ioloop.IOLoop.instance().start()</div><div class="line">83</div></pre></td></tr></table></figure>
+<p>address 是新增的 host 参数。本身是没有的</p>
+<p>恭喜你，你已经构建完自己的配置中心了。接下来需要做的是，提高性能，和稳定性，扩展 zookeeper。一入门，接下来，自己走吧。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/configuration/" rel="tag"># configuration</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/20/testing/" rel="next" title="testing">
+                <i class="fa fa-chevron-left"></i> testing
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/26/qconf/"
+           data-title="qconf" data-url="http://janhuang.github.io/2017/03/26/qconf/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="黄总" />
+          <p class="site-author-name" itemprop="name">黄总</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#QConf-服务端"><span class="nav-number">1.</span> <span class="nav-text">QConf 服务端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QConf-客户端"><span class="nav-number">2.</span> <span class="nav-text">QConf 客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环境"><span class="nav-number">3.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-zookeeper"><span class="nav-number">3.2.</span> <span class="nav-text">安装 zookeeper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#QConf"><span class="nav-number">3.3.</span> <span class="nav-text">QConf</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-PHP-扩展"><span class="nav-number">3.3.1.</span> <span class="nav-text">安装 PHP 扩展</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zkdash"><span class="nav-number">3.4.</span> <span class="nav-text">zkdash</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄总</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"janhuang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
