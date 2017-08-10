@@ -257,6 +257,329 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/08/09/config_center/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="黄总">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="// 黄总">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/09/config_center/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-09T19:10:23+08:00">
+                2017-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/09/config_center/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/09/config_center/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="为FastD-API构建配置中心"><a href="#为FastD-API构建配置中心" class="headerlink" title="为FastD API构建配置中心"></a>为FastD API构建配置中心</h1><p>过去专门做了一篇文档来构建配置中心，基于 <a href="https://zookeeper.apache.org/" target="_blank" rel="external">zookeeper</a> 的配置中心。</p>
+<p>环境要求及构建步骤可参考: <a href="https://segmentfault.com/a/1190000008949515" target="_blank" rel="external">QConf搭建配置中心</a></p>
+<p>随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。</p>
+<h4 id="安装-qconf-扩展包"><a href="#安装-qconf-扩展包" class="headerlink" title="安装 qconf 扩展包"></a>安装 qconf 扩展包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require fastd/qconf-service-provider -vvv</div></pre></td></tr></table></figure>
+<p>扩展包有点特殊，不需要任何的注册操作，当执行完 composer 依赖之后，会自动加载辅助函数，仅需对配置中心进行读取配置即可。</p>
+<p>提供两个函数:</p>
+<p><code>qconf_get_value</code> 获取对应节点值</p>
+<p><code>qconf_get_values</code> 获取对应节点值数组</p>
+<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><p><code>config/config.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'demo'</span> =&gt; qconf_get_value(<span class="string">'/demo/test'</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="string">'abc'</span>)</div><div class="line">];</div></pre></td></tr></table></figure>
+<p>值得注意的是，如果万一不小心，qconf 出现错误或者异常无法运行的时候，则需要保留一个默认配置项，这个小动作可能会在你系统出现异常的时候救你一命。</p>
+<h4 id="测试配置中心"><a href="#测试配置中心" class="headerlink" title="测试配置中心"></a>测试配置中心</h4><p>完成基础配置后，需要对配置中心进行简单的测试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/console config:dump config</div></pre></td></tr></table></figure>
+<p>结果会将配置文件进行输出，来确认是否可用。</p>
+<p>最终架构图如下:</p>
+<p>@import “<a href="http://fastdlabs.com/storage/QQ20170810-120757%402x.png" target="_blank" rel="external">http://fastdlabs.com/storage/QQ20170810-120757%402x.png</a>“</p>
+<p>无论扩展多少个业务应用，仅需要一个配置中心即可完成处出修改。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/08/07/best_practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="黄总">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="// 黄总">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/07/best_practice/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-07T18:55:02+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/07/best_practice/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/07/best_practice/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="FastD-API-开发实践"><a href="#FastD-API-开发实践" class="headerlink" title="FastD API 开发实践"></a>FastD API 开发实践</h1><p>FastD 是一个专门针对 API 应用层而生的一个 PHP 应用框架，提供良好的中间件，路由以及支持 swoole 扩展运行，从而具体良好的性能条件。</p>
+<h4 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer create-project fastd/dobee api -vvv</div></pre></td></tr></table></figure>
+<p>创建一个为 API 的项目。</p>
+<h4 id="运行第一个程序"><a href="#运行第一个程序" class="headerlink" title="运行第一个程序"></a>运行第一个程序</h4><p>进入命令行模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php -S localhost:9876 -t web</div></pre></td></tr></table></figure>
+<p>访问 <code>localhost:9876</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"msg"</span>:<span class="string">"hello dobee"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h4><p>点击: <a href="http://fastdlabs.com/blog/2" target="_blank" rel="external">FastD设计详解</a></p>
+<h4 id="实现第一个路由"><a href="#实现第一个路由" class="headerlink" title="实现第一个路由"></a>实现第一个路由</h4><h5 id="1-创建”控制器”"><a href="#1-创建”控制器”" class="headerlink" title="1. 创建”控制器”"></a>1. 创建”控制器”</h5><p>通过命令行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/console controller:create &#123;name&#125;</div></pre></td></tr></table></figure>
+<p>命令行会自动创建 CURD 多个操作方法，由开发者手动添加操作逻辑。</p>
+<p>手动创建</p>
+<p>MeController.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Controller</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">FastD</span>\<span class="title">Http</span>\<span class="title">ServerRequest</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MeController</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">me</span><span class="params">(ServerRequest $request)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> json([</div><div class="line">            <span class="string">'name'</span> =&gt; <span class="string">'janhuang'</span></div><div class="line">        ]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="2-添加路由地址"><a href="#2-添加路由地址" class="headerlink" title="2. 添加路由地址"></a>2. 添加路由地址</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">route()-&gt;get(<span class="string">'/'</span>, <span class="string">'WelcomeController@welcome'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/hello/&#123;name&#125;'</span>, <span class="string">'WelcomeController@sayHello'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/who'</span>, <span class="string">'MeController@me'</span>);</div></pre></td></tr></table></figure>
+<h5 id="3-调用"><a href="#3-调用" class="headerlink" title="3. 调用"></a>3. 调用</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -i http://127.0.0.1:9876/who</div></pre></td></tr></table></figure>
+<blockquote>
+<p>response</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"janhuang"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>完成最第一个路由。</p>
+<h4 id="给应用添加单元测试"><a href="#给应用添加单元测试" class="headerlink" title="给应用添加单元测试"></a>给应用添加单元测试</h4><p>我仍热认为测试是一个非常重要的环节，也是一个优秀开发者一个重要品质之一。</p>
+<p>如果其中涉及数据库测试，可以参考: <a href="https://github.com/JanHuang/fastD/blob/master/docs/zh_CN/3-6-testcase.md#数据库测试" target="_blank" rel="external">数据库测试</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Testing</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">FastD</span>\<span class="title">TestCase</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WelcomeControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testSayHello</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        $request = <span class="keyword">$this</span>-&gt;request(<span class="string">'GET'</span>, <span class="string">'/'</span>);</div><div class="line">        $response = <span class="keyword">$this</span>-&gt;app-&gt;handleRequest($request);</div><div class="line">        <span class="keyword">$this</span>-&gt;isSuccessful($response);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以给你的应用API添加格式各样的测试，来验证程序的有效性。</p>
+<h4 id="给-API-添加公共缓存"><a href="#给-API-添加公共缓存" class="headerlink" title="给 API 添加公共缓存"></a>给 API 添加公共缓存</h4><p><strong>何为公共缓存？</strong></p>
+<p>公共缓存的灵感来自于 <a href="https://varnish-cache.org/" target="_blank" rel="external">varnish</a>，当用户发起非 <code>GET</code> 请求的时候，进行缓存处理并返回(如果有的话)，其他请求一律穿透，交给底层处理。</p>
+<p>缓存也是一个前置中间件，使用方式与日常操作保持一致。</p>
+<p>文档: <a href="https://github.com/JanHuang/fastD/blob/master/docs/zh_CN/3-2-middleware.md" target="_blank" rel="external">中间件</a></p>
+<p><code>config/app.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="comment">// code...</span></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Http middleware</div><div class="line">     */</div><div class="line">    <span class="string">'middleware'</span> =&gt; [</div><div class="line">        <span class="comment">// code</span></div><div class="line">        <span class="string">'common.cache'</span> =&gt; [\FastD\Middleware\CacheMiddleware::class]</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
+<p><code>config/routes.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">route()-&gt;get(<span class="string">'/'</span>, <span class="string">'WelcomeController@welcome'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/hello/&#123;name&#125;'</span>, <span class="string">'WelcomeController@sayHello'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/who'</span>, <span class="string">'MeController@me'</span>)-&gt;withMiddleware(<span class="string">'common.cache'</span>);</div></pre></td></tr></table></figure>
+<p>完成配置后，请求路由地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">curl -i http://localhost:9876/who</div><div class="line"></div><div class="line">HTTP/1.1 200</div><div class="line">Host: localhost:9876</div><div class="line">Connection: close</div><div class="line">X-Powered-By: PHP/7.0.0</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line">X-Cache: ee4d94f352cb03116b61ce9158720ebf</div><div class="line">Expires: Tue, 08 Aug 2017 10:58:21 GMT</div></pre></td></tr></table></figure>
+<p>会产生 <code>X-Cache</code> 新的响应头，用于代表缓存生效。</p>
+<h4 id="Basic-Auth"><a href="#Basic-Auth" class="headerlink" title="Basic Auth"></a>Basic Auth</h4><p>大部分 API 中，都需要对请求来源进行一定的鉴权处理，由于框架已经集成了简单的 Basic auth，使用方法与上述保持一致。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">route()-&gt;get(<span class="string">'/'</span>, <span class="string">'WelcomeController@welcome'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/hello/&#123;name&#125;'</span>, <span class="string">'WelcomeController@sayHello'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/who'</span>, <span class="string">'MeController@me'</span>)-&gt;withMiddleware([<span class="string">'basic.auth'</span>, <span class="string">'common.cache'</span>]);</div></pre></td></tr></table></figure>
+<h4 id="为-API-Server-加速"><a href="#为-API-Server-加速" class="headerlink" title="为 API Server 加速"></a>为 API Server 加速</h4><p>众所周知，<a href="http://swoole.com/" target="_blank" rel="external">swoole</a> 为 PHP 提供了良好的性能体验和网络通信体验，而框架中也无缝整合 swoole，为框架、服务提供良好体验做了一个铺垫，现在，你只需要配置IP、端口、swoole常用配置，即可无痕启动以 swoole 服务器，为你的 API Server 进行加速处理。</p>
+<p><code>config/server.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span>    jan huang &lt;bboyjanhuang<span class="doctag">@gmail</span>.com&gt;</div><div class="line"> * <span class="doctag">@copyright</span> 2016</div><div class="line"> *</div><div class="line"> * <span class="doctag">@link</span>      https://www.github.com/janhuang</div><div class="line"> * <span class="doctag">@link</span>      http://www.fast-d.cn/</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'http://'</span>.get_local_ip().<span class="string">':9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\HTTPServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'user'</span> =&gt; <span class="string">'nobody'</span>,</div><div class="line">        <span class="string">'group'</span> =&gt; <span class="string">'nogroup'</span>,</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'log_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/logs/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'log_level'</span> =&gt; <span class="number">5</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">    <span class="string">'processes'</span> =&gt; [</div><div class="line"></div><div class="line">    ],</div><div class="line">    <span class="string">'listeners'</span> =&gt; [</div><div class="line"></div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
+<p><code>get_local_ip</code> 函数为了默认或者本地内网ip，如果你的API是对外开放的，请修改为您的外网ip或者 <code>0.0.0.0</code>。</p>
+<p><code>options</code> 参数为 swoole 扩展配置参数。请参考: <a href="https://wiki.swoole.com/wiki/page/274.html" target="_blank" rel="external">swoole配置</a></p>
+<h5 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/server start</div></pre></td></tr></table></figure>
+<h5 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/server start -d</div></pre></td></tr></table></figure>
+<h5 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/server stop</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/04/17/fastd-3-1-released/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1580,378 +1903,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/16/fastd/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="黄总">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="// 黄总">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/16/fastd/" itemprop="url">
-                  fastd
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T13:50:19+08:00">
-                2017-03-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/16/fastd/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/fastd/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="FastD-框架简介"><a href="#FastD-框架简介" class="headerlink" title="FastD 框架简介"></a>FastD 框架简介</h2><p>FastD 意在创造一个简单，一用的 API 框架，注重应用逻辑实现。</p>
-<h3 id="使用文档"><a href="#使用文档" class="headerlink" title="使用文档"></a>使用文档</h3><ul>
-<li><a href="https://github.com/JanHuang/fastD/blob/master/docs/zh_CN/readme.md" target="_blank" rel="external">简体中文</a></li>
-</ul>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>由于 FastD 是可运行在 FPM 和 Swoole 之上，在 FPM 运行环境下，生命周期与普通的 PHP 是一致的。</p>
-<p>而那么在 Swoole 运行环境当中，则是运行在内存当中，常规的 PHP 开发者都没有很好的内存进行清理管理，所以若是运行在 Swoole 环境上，则需要对无用的数据进行清理，对异常进行处理，清除 exit/die 等操作。</p>
-<h4 id="启动-引导"><a href="#启动-引导" class="headerlink" title="启动/引导"></a>启动/引导</h4><p>当应用启动 bootstrap 方法是，程序正式进入初始化阶段，讲核心服务，配置注册到容器(应用)当中.</p>
-<ol>
-<li>加载应用配置</li>
-<li>注册系统服务与自定义服务</li>
-<li>加载路由</li>
-<li>标记已引导</li>
-</ol>
-<h4 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h4><p>当应用接收到用户请求，会先通过 Http 组件进行处理，然后传递到路由调度器中进行调度处理。</p>
-<ol>
-<li>接收请求</li>
-<li>匹配路由</li>
-<li>处理中间件</li>
-<li>返回处理</li>
-</ol>
-<h4 id="响应"><a href="#响应" class="headerlink" title="响应"></a>响应</h4><p>处理完请求后，应用接收返回，通过处理检验包装后，返回给客户端。</p>
-<ol>
-<li>接收处理返回</li>
-<li>返回客户端(输出)</li>
-</ol>
-<h4 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h4><p>在 FPM 模式下，当应用响应完成后，FPM 会自动清理或重置所有信息，而在 Swoole 运行环境下，则会将部分一次性数据进行重置，内部逻辑则不会进行清理，因此需要在逻辑处理中进行数据清理。</p>
-<ol>
-<li>清理数据</li>
-<li>日志记录</li>
-</ol>
-<h2 id="支持"><a href="#支持" class="headerlink" title="支持"></a>支持</h2><p>如果你在使用中遇到问题，请联系: <a href="mailto:bboyjanhuang@gmail.com" target="_blank" rel="external">bboyjanhuang@gmail.com</a>. 微博: <a href="http://weibo.com/ecbboyjan" target="_blank" rel="external">编码侠</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/16/learn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="黄总">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="// 黄总">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/16/learn/" itemprop="url">
-                  learn
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T12:16:14+08:00">
-                2017-03-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/16/learn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/learn/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="PHP-知识"><a href="#PHP-知识" class="headerlink" title="PHP 知识"></a>PHP 知识</h2><ul>
-<li>基础HTML、JavaScript、CSS知识</li>
-<li>环境配置，内置 Web 服务器</li>
-<li><a href="https://psr.phphub.org/" target="_blank" rel="external">PSR 知识</a></li>
-<li>Git 版本管理</li>
-<li>Composer 与 Packagist</li>
-<li>代码注释</li>
-<li>PEAR</li>
-<li>命名空间</li>
-<li>日期相关</li>
-<li>设计模式</li>
-<li>依赖注入、容器</li>
-<li>数据库操作、注入</li>
-<li>PHP 模板??? (能够深入PHP，而不仅仅在套模板上)</li>
-<li>错误与异常</li>
-<li>web 安全，密码哈希</li>
-<li>CLI 命令行</li>
-<li>配置文件</li>
-<li>多环境配置，测试环境，开发环境，生产环境</li>
-<li>应用测试，单元测试，测试驱动</li>
-<li>持续集成</li>
-<li>服务与部署、PaaP 服务</li>
-<li>Vagrant</li>
-<li>缓存，OPcode，文件缓存，redis 缓存</li>
-<li>开源框架、开源组件<ul>
-<li><a href="https://github.com/symfony/symfony" target="_blank" rel="external">Symfony</a></li>
-<li><a href="https://github.com/laravel/laravel" target="_blank" rel="external">Laravel</a></li>
-<li><a href="https://github.com/JanHuang/fastD" target="_blank" rel="external">FastD</a></li>
-<li><a href="https://github.com/slimphp/Slim" target="_blank" rel="external">Slim</a></li>
-<li><a href="https://github.com/cakephp/cakephp" target="_blank" rel="external">cakePHP</a></li>
-</ul>
-</li>
-<li>热门社区，Github</li>
-<li>网络编程 <a href="http://www.swoole.com/" target="_blank" rel="external">Swoole</a></li>
-<li>其他语言学习，go、python、lua、C/C++</li>
-<li>PHP扩展开发</li>
-<li>架构基础，理论</li>
-<li>分布式概念</li>
-<li>服务化概念<ul>
-<li>实践 RPC </li>
-</ul>
-</li>
-</ul>
-<h2 id="运维知识"><a href="#运维知识" class="headerlink" title="运维知识"></a>运维知识</h2><ul>
-<li>linux 环境搭建，centos，ubuntu，arch</li>
-<li>基本文件目录管理命令</li>
-<li>压缩打包命令</li>
-<li>挂载命令</li>
-<li>vim编辑器使用</li>
-<li>磁盘管理命令</li>
-<li>用户管理</li>
-<li>权限管理</li>
-<li>进程管理</li>
-<li>计划任务</li>
-<li>服务管理</li>
-<li>系统管理</li>
-<li>FTP, SFTP</li>
-<li>shell编程</li>
-<li>lnmp 环境部署<ul>
-<li>php</li>
-<li>nginx</li>
-<li>mysql</li>
-</ul>
-</li>
-<li>nginx web配置</li>
-<li>网络管理,抓包</li>
-<li>DNS，LVS</li>
-<li>TCP/IP</li>
-<li>虚拟化，docker</li>
-<li>自动化工具 Puppet，ansible</li>
-<li>系统工具 SaltStack</li>
-<li>监控工具 zabbix，Cacti</li>
-<li>安全 iptables</li>
-<li>配置管理 CMDB</li>
-<li>内核配置及优化</li>
-<li>Linux C</li>
-<li>硬件</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
           
           </div>
@@ -1994,7 +1952,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -87,70 +87,25 @@
 
 
 
-<meta name="description" content="PHP 知识
-基础HTML、JavaScript、CSS知识
-环境配置，内置 Web 服务器
-PSR 知识
-Git 版本管理
-Composer 与 Packagist
-代码注释
-PEAR
-命名空间
-日期相关
-设计模式
-依赖注入、容器
-数据库操作、注入
-PHP 模板??? (能够深入PHP，而不仅仅在套模板上)
-错误与异常
-web 安全，密码哈希
-CLI 命令行
-配置文件
-多环境配置，测试环境，开发">
+<meta name="description" content="为FastD API构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
+环境要求及构建步骤可参考: QConf搭建配置中心
+随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。
+安装 qconf 扩展包1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="learn">
-<meta property="og:url" content="http://janhuang.github.io/2017/03/16/learn/index.html">
+<meta property="og:title" content="// 黄总">
+<meta property="og:url" content="http://janhuang.github.io/2017/08/09/config_center/index.html">
 <meta property="og:site_name" content="// 黄总">
-<meta property="og:description" content="PHP 知识
-基础HTML、JavaScript、CSS知识
-环境配置，内置 Web 服务器
-PSR 知识
-Git 版本管理
-Composer 与 Packagist
-代码注释
-PEAR
-命名空间
-日期相关
-设计模式
-依赖注入、容器
-数据库操作、注入
-PHP 模板??? (能够深入PHP，而不仅仅在套模板上)
-错误与异常
-web 安全，密码哈希
-CLI 命令行
-配置文件
-多环境配置，测试环境，开发">
-<meta property="og:updated_time" content="2017-03-17T17:09:00.000Z">
+<meta property="og:description" content="为FastD API构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
+环境要求及构建步骤可参考: QConf搭建配置中心
+随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。
+安装 qconf 扩展包1">
+<meta property="og:updated_time" content="2017-08-10T06:17:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="learn">
-<meta name="twitter:description" content="PHP 知识
-基础HTML、JavaScript、CSS知识
-环境配置，内置 Web 服务器
-PSR 知识
-Git 版本管理
-Composer 与 Packagist
-代码注释
-PEAR
-命名空间
-日期相关
-设计模式
-依赖注入、容器
-数据库操作、注入
-PHP 模板??? (能够深入PHP，而不仅仅在套模板上)
-错误与异常
-web 安全，密码哈希
-CLI 命令行
-配置文件
-多环境配置，测试环境，开发">
+<meta name="twitter:title" content="// 黄总">
+<meta name="twitter:description" content="为FastD API构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
+环境要求及构建步骤可参考: QConf搭建配置中心
+随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。
+安装 qconf 扩展包1">
 
 
 
@@ -178,13 +133,13 @@ CLI 命令行
 
 
 
-  <link rel="canonical" href="http://janhuang.github.io/2017/03/16/learn/"/>
+  <link rel="canonical" href="http://janhuang.github.io/2017/08/09/config_center/"/>
 
 
 
 
 
-  <title> learn | // 黄总 </title>
+  <title>  | // 黄总 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -313,7 +268,7 @@ CLI 命令行
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/16/learn/">
+    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/08/09/config_center/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="黄总">
@@ -334,7 +289,7 @@ CLI 命令行
             
             
               
-                learn
+                
               
             
           </h1>
@@ -349,8 +304,8 @@ CLI 命令行
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T12:16:14+08:00">
-                2017-03-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-09T19:10:23+08:00">
+                2017-08-09
               </time>
             
 
@@ -368,8 +323,8 @@ CLI 命令行
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/03/16/learn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/16/learn/" itemprop="commentCount"></span>
+                <a href="/2017/08/09/config_center/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/09/config_center/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -395,84 +350,23 @@ CLI 命令行
       
 
       
-        <h2 id="PHP-知识"><a href="#PHP-知识" class="headerlink" title="PHP 知识"></a>PHP 知识</h2><ul>
-<li>基础HTML、JavaScript、CSS知识</li>
-<li>环境配置，内置 Web 服务器</li>
-<li><a href="https://psr.phphub.org/" target="_blank" rel="external">PSR 知识</a></li>
-<li>Git 版本管理</li>
-<li>Composer 与 Packagist</li>
-<li>代码注释</li>
-<li>PEAR</li>
-<li>命名空间</li>
-<li>日期相关</li>
-<li>设计模式</li>
-<li>依赖注入、容器</li>
-<li>数据库操作、注入</li>
-<li>PHP 模板??? (能够深入PHP，而不仅仅在套模板上)</li>
-<li>错误与异常</li>
-<li>web 安全，密码哈希</li>
-<li>CLI 命令行</li>
-<li>配置文件</li>
-<li>多环境配置，测试环境，开发环境，生产环境</li>
-<li>应用测试，单元测试，测试驱动</li>
-<li>持续集成</li>
-<li>服务与部署、PaaP 服务</li>
-<li>Vagrant</li>
-<li>缓存，OPcode，文件缓存，redis 缓存</li>
-<li>开源框架、开源组件<ul>
-<li><a href="https://github.com/symfony/symfony" target="_blank" rel="external">Symfony</a></li>
-<li><a href="https://github.com/laravel/laravel" target="_blank" rel="external">Laravel</a></li>
-<li><a href="https://github.com/JanHuang/fastD" target="_blank" rel="external">FastD</a></li>
-<li><a href="https://github.com/slimphp/Slim" target="_blank" rel="external">Slim</a></li>
-<li><a href="https://github.com/cakephp/cakephp" target="_blank" rel="external">cakePHP</a></li>
-</ul>
-</li>
-<li>热门社区，Github</li>
-<li>网络编程 <a href="http://www.swoole.com/" target="_blank" rel="external">Swoole</a></li>
-<li>其他语言学习，go、python、lua、C/C++</li>
-<li>PHP扩展开发</li>
-<li>架构基础，理论</li>
-<li>分布式概念</li>
-<li>服务化概念<ul>
-<li>实践 RPC </li>
-</ul>
-</li>
-</ul>
-<h2 id="运维知识"><a href="#运维知识" class="headerlink" title="运维知识"></a>运维知识</h2><ul>
-<li>linux 环境搭建，centos，ubuntu，arch</li>
-<li>基本文件目录管理命令</li>
-<li>压缩打包命令</li>
-<li>挂载命令</li>
-<li>vim编辑器使用</li>
-<li>磁盘管理命令</li>
-<li>用户管理</li>
-<li>权限管理</li>
-<li>进程管理</li>
-<li>计划任务</li>
-<li>服务管理</li>
-<li>系统管理</li>
-<li>FTP, SFTP</li>
-<li>shell编程</li>
-<li>lnmp 环境部署<ul>
-<li>php</li>
-<li>nginx</li>
-<li>mysql</li>
-</ul>
-</li>
-<li>nginx web配置</li>
-<li>网络管理,抓包</li>
-<li>DNS，LVS</li>
-<li>TCP/IP</li>
-<li>虚拟化，docker</li>
-<li>自动化工具 Puppet，ansible</li>
-<li>系统工具 SaltStack</li>
-<li>监控工具 zabbix，Cacti</li>
-<li>安全 iptables</li>
-<li>配置管理 CMDB</li>
-<li>内核配置及优化</li>
-<li>Linux C</li>
-<li>硬件</li>
-</ul>
+        <h1 id="为FastD-API构建配置中心"><a href="#为FastD-API构建配置中心" class="headerlink" title="为FastD API构建配置中心"></a>为FastD API构建配置中心</h1><p>过去专门做了一篇文档来构建配置中心，基于 <a href="https://zookeeper.apache.org/" target="_blank" rel="external">zookeeper</a> 的配置中心。</p>
+<p>环境要求及构建步骤可参考: <a href="https://segmentfault.com/a/1190000008949515" target="_blank" rel="external">QConf搭建配置中心</a></p>
+<p>随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。</p>
+<h4 id="安装-qconf-扩展包"><a href="#安装-qconf-扩展包" class="headerlink" title="安装 qconf 扩展包"></a>安装 qconf 扩展包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require fastd/qconf-service-provider -vvv</div></pre></td></tr></table></figure>
+<p>扩展包有点特殊，不需要任何的注册操作，当执行完 composer 依赖之后，会自动加载辅助函数，仅需对配置中心进行读取配置即可。</p>
+<p>提供两个函数:</p>
+<p><code>qconf_get_value</code> 获取对应节点值</p>
+<p><code>qconf_get_values</code> 获取对应节点值数组</p>
+<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><p><code>config/config.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'demo'</span> =&gt; qconf_get_value(<span class="string">'/demo/test'</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="string">'abc'</span>)</div><div class="line">];</div></pre></td></tr></table></figure>
+<p>值得注意的是，如果万一不小心，qconf 出现错误或者异常无法运行的时候，则需要保留一个默认配置项，这个小动作可能会在你系统出现异常的时候救你一命。</p>
+<h4 id="测试配置中心"><a href="#测试配置中心" class="headerlink" title="测试配置中心"></a>测试配置中心</h4><p>完成基础配置后，需要对配置中心进行简单的测试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/console config:dump config</div></pre></td></tr></table></figure>
+<p>结果会将配置文件进行输出，来确认是否可用。</p>
+<p>最终架构图如下:</p>
+<p>@import “<a href="http://fastdlabs.com/storage/QQ20170810-120757%402x.png" target="_blank" rel="external">http://fastdlabs.com/storage/QQ20170810-120757%402x.png</a>“</p>
+<p>无论扩展多少个业务应用，仅需要一个配置中心即可完成处出修改。</p>
 
       
     </div>
@@ -509,15 +403,15 @@ CLI 命令行
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/08/07/best_practice/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/16/fastd/" rel="prev" title="fastd">
-                fastd <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -543,8 +437,8 @@ CLI 命令行
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/03/16/learn/"
-           data-title="learn" data-url="http://janhuang.github.io/2017/03/16/learn/">
+      <div class="ds-thread" data-thread-key="2017/08/09/config_center/"
+           data-title="" data-url="http://janhuang.github.io/2017/08/09/config_center/">
       </div>
     
   </div>
@@ -641,7 +535,7 @@ CLI 命令行
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-知识"><span class="nav-number">1.</span> <span class="nav-text">PHP 知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维知识"><span class="nav-number">2.</span> <span class="nav-text">运维知识</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为FastD-API构建配置中心"><span class="nav-number">1.</span> <span class="nav-text">为FastD API构建配置中心</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-qconf-扩展包"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">安装 qconf 扩展包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改配置文件"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试配置中心"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">测试配置中心</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

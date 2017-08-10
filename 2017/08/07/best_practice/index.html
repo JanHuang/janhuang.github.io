@@ -1,0 +1,750 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="FastD API 开发实践FastD 是一个专门针对 API 应用层而生的一个 PHP 应用框架，提供良好的中间件，路由以及支持 swoole 扩展运行，从而具体良好的性能条件。
+创建项目1composer create-project fastd/dobee api -vvv
+创建一个为 API 的项目。
+运行第一个程序进入命令行模式
+1php -S localhost:9876 -t web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="// 黄总">
+<meta property="og:url" content="http://janhuang.github.io/2017/08/07/best_practice/index.html">
+<meta property="og:site_name" content="// 黄总">
+<meta property="og:description" content="FastD API 开发实践FastD 是一个专门针对 API 应用层而生的一个 PHP 应用框架，提供良好的中间件，路由以及支持 swoole 扩展运行，从而具体良好的性能条件。
+创建项目1composer create-project fastd/dobee api -vvv
+创建一个为 API 的项目。
+运行第一个程序进入命令行模式
+1php -S localhost:9876 -t web">
+<meta property="og:updated_time" content="2017-08-10T06:17:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="// 黄总">
+<meta name="twitter:description" content="FastD API 开发实践FastD 是一个专门针对 API 应用层而生的一个 PHP 应用框架，提供良好的中间件，路由以及支持 swoole 扩展运行，从而具体良好的性能条件。
+创建项目1composer create-project fastd/dobee api -vvv
+创建一个为 API 的项目。
+运行第一个程序进入命令行模式
+1php -S localhost:9876 -t web">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '5381324',
+      author: '黄总大大'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://janhuang.github.io/2017/08/07/best_practice/"/>
+
+
+
+
+
+  <title>  | // 黄总 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">// 黄总</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/08/07/best_practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="黄总">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="// 黄总">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-07T18:55:02+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/07/best_practice/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/07/best_practice/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="FastD-API-开发实践"><a href="#FastD-API-开发实践" class="headerlink" title="FastD API 开发实践"></a>FastD API 开发实践</h1><p>FastD 是一个专门针对 API 应用层而生的一个 PHP 应用框架，提供良好的中间件，路由以及支持 swoole 扩展运行，从而具体良好的性能条件。</p>
+<h4 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer create-project fastd/dobee api -vvv</div></pre></td></tr></table></figure>
+<p>创建一个为 API 的项目。</p>
+<h4 id="运行第一个程序"><a href="#运行第一个程序" class="headerlink" title="运行第一个程序"></a>运行第一个程序</h4><p>进入命令行模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php -S localhost:9876 -t web</div></pre></td></tr></table></figure>
+<p>访问 <code>localhost:9876</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"msg"</span>:<span class="string">"hello dobee"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h4><p>点击: <a href="http://fastdlabs.com/blog/2" target="_blank" rel="external">FastD设计详解</a></p>
+<h4 id="实现第一个路由"><a href="#实现第一个路由" class="headerlink" title="实现第一个路由"></a>实现第一个路由</h4><h5 id="1-创建”控制器”"><a href="#1-创建”控制器”" class="headerlink" title="1. 创建”控制器”"></a>1. 创建”控制器”</h5><p>通过命令行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/console controller:create &#123;name&#125;</div></pre></td></tr></table></figure>
+<p>命令行会自动创建 CURD 多个操作方法，由开发者手动添加操作逻辑。</p>
+<p>手动创建</p>
+<p>MeController.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Controller</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">FastD</span>\<span class="title">Http</span>\<span class="title">ServerRequest</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MeController</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">me</span><span class="params">(ServerRequest $request)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> json([</div><div class="line">            <span class="string">'name'</span> =&gt; <span class="string">'janhuang'</span></div><div class="line">        ]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="2-添加路由地址"><a href="#2-添加路由地址" class="headerlink" title="2. 添加路由地址"></a>2. 添加路由地址</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">route()-&gt;get(<span class="string">'/'</span>, <span class="string">'WelcomeController@welcome'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/hello/&#123;name&#125;'</span>, <span class="string">'WelcomeController@sayHello'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/who'</span>, <span class="string">'MeController@me'</span>);</div></pre></td></tr></table></figure>
+<h5 id="3-调用"><a href="#3-调用" class="headerlink" title="3. 调用"></a>3. 调用</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -i http://127.0.0.1:9876/who</div></pre></td></tr></table></figure>
+<blockquote>
+<p>response</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"janhuang"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>完成最第一个路由。</p>
+<h4 id="给应用添加单元测试"><a href="#给应用添加单元测试" class="headerlink" title="给应用添加单元测试"></a>给应用添加单元测试</h4><p>我仍热认为测试是一个非常重要的环节，也是一个优秀开发者一个重要品质之一。</p>
+<p>如果其中涉及数据库测试，可以参考: <a href="https://github.com/JanHuang/fastD/blob/master/docs/zh_CN/3-6-testcase.md#数据库测试" target="_blank" rel="external">数据库测试</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> <span class="title">Testing</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">FastD</span>\<span class="title">TestCase</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WelcomeControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testSayHello</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        $request = <span class="keyword">$this</span>-&gt;request(<span class="string">'GET'</span>, <span class="string">'/'</span>);</div><div class="line">        $response = <span class="keyword">$this</span>-&gt;app-&gt;handleRequest($request);</div><div class="line">        <span class="keyword">$this</span>-&gt;isSuccessful($response);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以给你的应用API添加格式各样的测试，来验证程序的有效性。</p>
+<h4 id="给-API-添加公共缓存"><a href="#给-API-添加公共缓存" class="headerlink" title="给 API 添加公共缓存"></a>给 API 添加公共缓存</h4><p><strong>何为公共缓存？</strong></p>
+<p>公共缓存的灵感来自于 <a href="https://varnish-cache.org/" target="_blank" rel="external">varnish</a>，当用户发起非 <code>GET</code> 请求的时候，进行缓存处理并返回(如果有的话)，其他请求一律穿透，交给底层处理。</p>
+<p>缓存也是一个前置中间件，使用方式与日常操作保持一致。</p>
+<p>文档: <a href="https://github.com/JanHuang/fastD/blob/master/docs/zh_CN/3-2-middleware.md" target="_blank" rel="external">中间件</a></p>
+<p><code>config/app.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="comment">// code...</span></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Http middleware</div><div class="line">     */</div><div class="line">    <span class="string">'middleware'</span> =&gt; [</div><div class="line">        <span class="comment">// code</span></div><div class="line">        <span class="string">'common.cache'</span> =&gt; [\FastD\Middleware\CacheMiddleware::class]</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
+<p><code>config/routes.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">route()-&gt;get(<span class="string">'/'</span>, <span class="string">'WelcomeController@welcome'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/hello/&#123;name&#125;'</span>, <span class="string">'WelcomeController@sayHello'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/who'</span>, <span class="string">'MeController@me'</span>)-&gt;withMiddleware(<span class="string">'common.cache'</span>);</div></pre></td></tr></table></figure>
+<p>完成配置后，请求路由地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">curl -i http://localhost:9876/who</div><div class="line"></div><div class="line">HTTP/1.1 200</div><div class="line">Host: localhost:9876</div><div class="line">Connection: close</div><div class="line">X-Powered-By: PHP/7.0.0</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line">X-Cache: ee4d94f352cb03116b61ce9158720ebf</div><div class="line">Expires: Tue, 08 Aug 2017 10:58:21 GMT</div></pre></td></tr></table></figure>
+<p>会产生 <code>X-Cache</code> 新的响应头，用于代表缓存生效。</p>
+<h4 id="Basic-Auth"><a href="#Basic-Auth" class="headerlink" title="Basic Auth"></a>Basic Auth</h4><p>大部分 API 中，都需要对请求来源进行一定的鉴权处理，由于框架已经集成了简单的 Basic auth，使用方法与上述保持一致。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">route()-&gt;get(<span class="string">'/'</span>, <span class="string">'WelcomeController@welcome'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/hello/&#123;name&#125;'</span>, <span class="string">'WelcomeController@sayHello'</span>);</div><div class="line">route()-&gt;get(<span class="string">'/who'</span>, <span class="string">'MeController@me'</span>)-&gt;withMiddleware([<span class="string">'basic.auth'</span>, <span class="string">'common.cache'</span>]);</div></pre></td></tr></table></figure>
+<h4 id="为-API-Server-加速"><a href="#为-API-Server-加速" class="headerlink" title="为 API Server 加速"></a>为 API Server 加速</h4><p>众所周知，<a href="http://swoole.com/" target="_blank" rel="external">swoole</a> 为 PHP 提供了良好的性能体验和网络通信体验，而框架中也无缝整合 swoole，为框架、服务提供良好体验做了一个铺垫，现在，你只需要配置IP、端口、swoole常用配置，即可无痕启动以 swoole 服务器，为你的 API Server 进行加速处理。</p>
+<p><code>config/server.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span>    jan huang &lt;bboyjanhuang<span class="doctag">@gmail</span>.com&gt;</div><div class="line"> * <span class="doctag">@copyright</span> 2016</div><div class="line"> *</div><div class="line"> * <span class="doctag">@link</span>      https://www.github.com/janhuang</div><div class="line"> * <span class="doctag">@link</span>      http://www.fast-d.cn/</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'http://'</span>.get_local_ip().<span class="string">':9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\HTTPServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'user'</span> =&gt; <span class="string">'nobody'</span>,</div><div class="line">        <span class="string">'group'</span> =&gt; <span class="string">'nogroup'</span>,</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'log_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/logs/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'log_level'</span> =&gt; <span class="number">5</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">    <span class="string">'processes'</span> =&gt; [</div><div class="line"></div><div class="line">    ],</div><div class="line">    <span class="string">'listeners'</span> =&gt; [</div><div class="line"></div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
+<p><code>get_local_ip</code> 函数为了默认或者本地内网ip，如果你的API是对外开放的，请修改为您的外网ip或者 <code>0.0.0.0</code>。</p>
+<p><code>options</code> 参数为 swoole 扩展配置参数。请参考: <a href="https://wiki.swoole.com/wiki/page/274.html" target="_blank" rel="external">swoole配置</a></p>
+<h5 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/server start</div></pre></td></tr></table></figure>
+<h5 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/server start -d</div></pre></td></tr></table></figure>
+<h5 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h5><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php bin/server stop</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/17/fastd-3-1-released/" rel="next" title="fastd-3.1-released">
+                <i class="fa fa-chevron-left"></i> fastd-3.1-released
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/09/config_center/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/08/07/best_practice/"
+           data-title="" data-url="http://janhuang.github.io/2017/08/07/best_practice/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="黄总" />
+          <p class="site-author-name" itemprop="name">黄总</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FastD-API-开发实践"><span class="nav-number">1.</span> <span class="nav-text">FastD API 开发实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建项目"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行第一个程序"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">运行第一个程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行流程"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">执行流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现第一个路由"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">实现第一个路由</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-创建”控制器”"><span class="nav-number">1.0.0.4.1.</span> <span class="nav-text">1. 创建”控制器”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-添加路由地址"><span class="nav-number">1.0.0.4.2.</span> <span class="nav-text">2. 添加路由地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-调用"><span class="nav-number">1.0.0.4.3.</span> <span class="nav-text">3. 调用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#给应用添加单元测试"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">给应用添加单元测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#给-API-添加公共缓存"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">给 API 添加公共缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Basic-Auth"><span class="nav-number">1.0.0.7.</span> <span class="nav-text">Basic Auth</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为-API-Server-加速"><span class="nav-number">1.0.0.8.</span> <span class="nav-text">为 API Server 加速</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动"><span class="nav-number">1.0.0.8.1.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#守护进程"><span class="nav-number">1.0.0.8.2.</span> <span class="nav-text">守护进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#停止"><span class="nav-number">1.0.0.8.3.</span> <span class="nav-text">停止</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">黄总</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"janhuang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
