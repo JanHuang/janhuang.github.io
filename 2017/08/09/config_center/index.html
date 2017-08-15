@@ -87,25 +87,25 @@
 
 
 
-<meta name="description" content="为FastD API构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
+<meta name="description" content="FastD 最佳实践之: 构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
 环境要求及构建步骤可参考: QConf搭建配置中心
 随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。
-安装 qconf 扩展包1">
+安装 qconf 扩">
 <meta property="og:type" content="article">
 <meta property="og:title" content="// 黄总">
 <meta property="og:url" content="http://janhuang.github.io/2017/08/09/config_center/index.html">
 <meta property="og:site_name" content="// 黄总">
-<meta property="og:description" content="为FastD API构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
+<meta property="og:description" content="FastD 最佳实践之: 构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
 环境要求及构建步骤可参考: QConf搭建配置中心
 随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。
-安装 qconf 扩展包1">
-<meta property="og:updated_time" content="2017-08-10T06:17:44.000Z">
+安装 qconf 扩">
+<meta property="og:updated_time" content="2017-08-10T07:43:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="// 黄总">
-<meta name="twitter:description" content="为FastD API构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
+<meta name="twitter:description" content="FastD 最佳实践之: 构建配置中心过去专门做了一篇文档来构建配置中心，基于 zookeeper 的配置中心。
 环境要求及构建步骤可参考: QConf搭建配置中心
 随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。
-安装 qconf 扩展包1">
+安装 qconf 扩">
 
 
 
@@ -350,7 +350,7 @@
       
 
       
-        <h1 id="为FastD-API构建配置中心"><a href="#为FastD-API构建配置中心" class="headerlink" title="为FastD API构建配置中心"></a>为FastD API构建配置中心</h1><p>过去专门做了一篇文档来构建配置中心，基于 <a href="https://zookeeper.apache.org/" target="_blank" rel="external">zookeeper</a> 的配置中心。</p>
+        <h1 id="FastD-最佳实践之-构建配置中心"><a href="#FastD-最佳实践之-构建配置中心" class="headerlink" title="FastD 最佳实践之: 构建配置中心"></a>FastD 最佳实践之: 构建配置中心</h1><p>过去专门做了一篇文档来构建配置中心，基于 <a href="https://zookeeper.apache.org/" target="_blank" rel="external">zookeeper</a> 的配置中心。</p>
 <p>环境要求及构建步骤可参考: <a href="https://segmentfault.com/a/1190000008949515" target="_blank" rel="external">QConf搭建配置中心</a></p>
 <p>随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。</p>
 <h4 id="安装-qconf-扩展包"><a href="#安装-qconf-扩展包" class="headerlink" title="安装 qconf 扩展包"></a>安装 qconf 扩展包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require fastd/qconf-service-provider -vvv</div></pre></td></tr></table></figure>
@@ -412,6 +412,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/gateway/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -487,7 +491,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -535,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为FastD-API构建配置中心"><span class="nav-number">1.</span> <span class="nav-text">为FastD API构建配置中心</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-qconf-扩展包"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">安装 qconf 扩展包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改配置文件"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试配置中心"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">测试配置中心</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FastD-最佳实践之-构建配置中心"><span class="nav-number">1.</span> <span class="nav-text">FastD 最佳实践之: 构建配置中心</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-qconf-扩展包"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">安装 qconf 扩展包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改配置文件"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试配置中心"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">测试配置中心</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -257,6 +257,174 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/08/10/gateway/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="黄总">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="// 黄总">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/10/gateway/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T15:42:45+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/10/gateway/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/10/gateway/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="FastD-最佳实践之-构建API网关"><a href="#FastD-最佳实践之-构建API网关" class="headerlink" title="FastD 最佳实践之: 构建API网关"></a>FastD 最佳实践之: 构建API网关</h1><p>构建完成 API 服务，配置中心之后，架构图大致如下:</p>
+<p><img src="http://fastdlabs.com/storage/QQ20170810-120757%402x.png" alt=""></p>
+<h4 id="我们为何需要网关"><a href="#我们为何需要网关" class="headerlink" title="我们为何需要网关"></a>我们为何需要网关</h4><p>引用 <a href="https://mp.weixin.qq.com/s/XTzRr0eR6ybpNFGJ57cVkA" target="_blank" rel="external">别人</a> 的一句话:</p>
+<blockquote>
+<p>我们总是听到编排这个词，所以我喜欢这张幻灯片 – 它展示了一个乐队，然后有个指挥家，下面一堆人（微型服务）演奏自己的乐器。这个指挥家（API网关）可以以某种方式来协调我们的架构如何处理请求。</p>
+</blockquote>
+<p>我们需要将业务或服务放置在网关背后，由网关统一处理请求入口，本身由多个入口的处理变成了一个入口，由网关进行统一调度。</p>
+<blockquote>
+<p>有一个很nice的事情，就是API网关让我们的客户端不用再需要知道和关心模块的地址（address）了。网关负责来搞这些事情，你只需要知道网关就好了。你可以去改变实现而且还可以改变API接口。不过通常来说，你改变接口后，会增加客户端出问题的风险。</p>
+</blockquote>
+<p>还有很多有趣的功能，有兴趣的朋友可以参考:</p>
+<ol>
+<li><a href="https://mp.weixin.qq.com/s/XTzRr0eR6ybpNFGJ57cVkA" target="_blank" rel="external">微服务与API 网关（上）: 为什么需要API网关？</a></li>
+<li><a href="https://mp.weixin.qq.com/s/Woktbld0-7bd73ySmVA3ug" target="_blank" rel="external">微服务与API 网关（下）: Kong能为我们做什么？</a></li>
+</ol>
+<h4 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h4><p>由于本人使用 ubuntu 虚拟机，所以此处只介绍 ubuntu 下的安装，其他安装方式可参考: <a href="https://getkong.org/install/" target="_blank" rel="external">kong installation</a></p>
+<h5 id="安装-postgresql"><a href="#安装-postgresql" class="headerlink" title="安装 postgresql"></a>安装 postgresql</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository &quot;deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main&quot;</div><div class="line">wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install postgresql-9.6</div></pre></td></tr></table></figure>
+<p>安装 postgresql 完成后，初始化数据库:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">su postgres</div><div class="line">psql</div><div class="line">CREATE USER kong; CREATE DATABASE kong OWNER kong;</div></pre></td></tr></table></figure>
+<p><code>ctrl + D</code> 退出</p>
+<h5 id="安装-kong"><a href="#安装-kong" class="headerlink" title="安装 kong"></a>安装 kong</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install openssl libpcre3 procps perl</div><div class="line">$ sudo dpkg -i kong-0.10.3.*.deb</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ kong start</div><div class="line"></div><div class="line"># Kong is running</div><div class="line">$ curl 127.0.0.1:8001</div></pre></td></tr></table></figure>
+<p>这个过程可能会出现: <code>[postgres error] FATAL: password authentication failed for user &quot;kong&quot;</code></p>
+<p>查看 pgsql 配置文件所在位置，因为我是 <code>apt-get install</code> 的，因此，存储位置在 <code>/etc/postgresql/9.6/</code></p>
+<p>修改 <code>/etc/postgresql/9.6/main/pg_hba.conf</code> 文件，找到IPv4 配置项，约92行，修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">host    all             all             127.0.0.1/32            md5</div><div class="line"></div><div class="line">=&gt;</div><div class="line"></div><div class="line">host    all             all             127.0.0.1/32            trust</div></pre></td></tr></table></figure>
+<p>重新启动即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo kong start</div></pre></td></tr></table></figure>
+<h4 id="整合-FastD-API"><a href="#整合-FastD-API" class="headerlink" title="整合 FastD API"></a>整合 FastD API</h4><h5 id="1-添加-API-到网关"><a href="#1-添加-API-到网关" class="headerlink" title="1. 添加 API 到网关"></a>1. 添加 API 到网关</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">curl -i -X POST \</div><div class="line">  http://127.0.0.1:8001/apis/ \</div><div class="line">  --data &apos;name=example-fastd&apos; \</div><div class="line">  --data &apos;hosts=fastd.com&apos; \</div><div class="line">  --data &apos;upstream_url=http://127.0.0.1:9527&apos;</div></pre></td></tr></table></figure>
+<p>添加 API Server 到网关，成果会返回 201 状态吗表示创建成功 (Created)</p>
+<h5 id="2-检查-API-状态"><a href="#2-检查-API-状态" class="headerlink" title="2. 检查 API 状态"></a>2. 检查 API 状态</h5><p>获取列表: <code>http://127.0.0.1:8001/apis/</code></p>
+<p>发起请求.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">curl -i -X GET \</div><div class="line">  --url http://127.0.0.1:8000/ \</div><div class="line">  --header &apos;Host: fastd.com&apos;</div></pre></td></tr></table></figure>
+<p>此时此刻你会发现已经成功使用 kong 对其进行代理，至此之外，已经完成了基本的网关接入。</p>
+<p><img src="http://fastdlabs.com/storage/QQ20170815-174158%402x.png" alt=""></p>
+<h4 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h4><p>kong 提供的插件非常丰富，因为也是基于 lua 的，因此你可以使用 openresty 对其进行扩展，开发更加贴近业务的应用。</p>
+<p>插件文档: <a href="https://getkong.org/docs/0.10.x/admin-api/#plugin-object" target="_blank" rel="external">点击</a></p>
+<p>更多可看 kong 官方文档。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/08/09/config_center/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -344,7 +512,7 @@
       
         
           
-            <h1 id="为FastD-API构建配置中心"><a href="#为FastD-API构建配置中心" class="headerlink" title="为FastD API构建配置中心"></a>为FastD API构建配置中心</h1><p>过去专门做了一篇文档来构建配置中心，基于 <a href="https://zookeeper.apache.org/" target="_blank" rel="external">zookeeper</a> 的配置中心。</p>
+            <h1 id="FastD-最佳实践之-构建配置中心"><a href="#FastD-最佳实践之-构建配置中心" class="headerlink" title="FastD 最佳实践之: 构建配置中心"></a>FastD 最佳实践之: 构建配置中心</h1><p>过去专门做了一篇文档来构建配置中心，基于 <a href="https://zookeeper.apache.org/" target="_blank" rel="external">zookeeper</a> 的配置中心。</p>
 <p>环境要求及构建步骤可参考: <a href="https://segmentfault.com/a/1190000008949515" target="_blank" rel="external">QConf搭建配置中心</a></p>
 <p>随着业务增长，部署的机器可能会随着增长，增加配置难度和维护难度。配置会因为机器的增多而变得更加容易出错，为了解决这个问题，于是我们引入了 360 开发的 Qconf 来解决这个问题，目前已经稳定用于线上环境当中。</p>
 <h4 id="安装-qconf-扩展包"><a href="#安装-qconf-扩展包" class="headerlink" title="安装 qconf 扩展包"></a>安装 qconf 扩展包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require fastd/qconf-service-provider -vvv</div></pre></td></tr></table></figure>
@@ -491,7 +659,7 @@
       
         
           
-            <h1 id="FastD-API-开发实践"><a href="#FastD-API-开发实践" class="headerlink" title="FastD API 开发实践"></a>FastD API 开发实践</h1><p>FastD 是一个专门针对 API 应用层而生的一个 PHP 应用框架，提供良好的中间件，路由以及支持 swoole 扩展运行，从而具体良好的性能条件。</p>
+            <h1 id="FastD-最佳实践之-构建API服务"><a href="#FastD-最佳实践之-构建API服务" class="headerlink" title="FastD 最佳实践之: 构建API服务"></a>FastD 最佳实践之: 构建API服务</h1><p>FastD 是一个专门针对 API 应用层而生的一个 PHP 应用框架，提供良好的中间件，路由以及支持 swoole 扩展运行，从而具体良好的性能条件。</p>
 <h4 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer create-project fastd/dobee api -vvv</div></pre></td></tr></table></figure>
 <p>创建一个为 API 的项目。</p>
 <h4 id="运行第一个程序"><a href="#运行第一个程序" class="headerlink" title="运行第一个程序"></a>运行第一个程序</h4><p>进入命令行模式</p>
@@ -1752,157 +1920,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/17/network/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="黄总">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="// 黄总">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/17/network/" itemprop="url">
-                  network
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-17T12:10:23+08:00">
-                2017-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/17/network/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/17/network/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在 FastD 3.1 框架中，内置多种网络模式，但最终都会转化为 HTTP 协议进行解析，因为开发模式只有一种，就是我们的编码，如果我们每种网络模式都编写一种代码，那么在维护，公用上是非常不方便的，起码在一个项目中操作是，</p>
-<p>如果能够做到无痕切换或者兼容，那无疑是最省人力和功夫的，但是方便的前提是需要牺牲一小部分的性能，但对比与便利性，我个人认为，这值得牺牲。</p>
-<h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><p>普遍的开发模式大部分是基于 Nginx，Apache HTTP服务器进行开发，也可能是一贯的模式，限制了大部分的思维和想法。直到有人用 PHP 编写 Web 服务器之后，workman，swoole 的出现，打破了这种所谓传统的模式。</p>
-<h4 id="内置-WebServer"><a href="#内置-WebServer" class="headerlink" title="内置 WebServer"></a>内置 WebServer</h4><p>PHP 本身内置了 Web 服务器，不依赖 nginx， 不依赖 apache，非常方便，适用于开发环境，暂时不建议用于生产。</p>
-<p>使用方式: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php -s host:port -t &#123;web root path&#125;</div></pre></td></tr></table></figure>
-<p>启动服务器后，访问指定的 host 和 port 即可访问到具体的网页内容，对于我们来说，这确实是一个很好的开发工具啊。</p>
-<h4 id="Swoole-HTTP-Server"><a href="#Swoole-HTTP-Server" class="headerlink" title="Swoole HTTP Server"></a>Swoole HTTP Server</h4><p>Swoole 提供一个高性能 HTTP Server，可以作为替代 php-fpm 的一种方式之一，可以结合 Nginx proxy_pass 的方法去代理到 Swoole HTTP Server 当中。</p>
-<p>使用方法也很简单，如下: </p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line">$serv = <span class="keyword">new</span> swoole_http_server(<span class="string">"127.0.0.1"</span>, <span class="number">9502</span>);</div><div class="line"></div><div class="line">$serv-&gt;on(<span class="string">'Request'</span>, <span class="function"><span class="keyword">function</span><span class="params">($request, $response)</span> </span>&#123;</div><div class="line">    var_dump($request-&gt;get);</div><div class="line">    var_dump($request-&gt;post);</div><div class="line">    var_dump($request-&gt;cookie);</div><div class="line">    var_dump($request-&gt;files);</div><div class="line">    var_dump($request-&gt;header);</div><div class="line">    var_dump($request-&gt;server);</div><div class="line"></div><div class="line">    $response-&gt;cookie(<span class="string">"User"</span>, <span class="string">"Swoole"</span>);</div><div class="line">    $response-&gt;header(<span class="string">"X-Server"</span>, <span class="string">"Swoole"</span>);</div><div class="line">    $response-&gt;end(<span class="string">"&lt;h1&gt;Hello Swoole!&lt;/h1&gt;"</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">$serv-&gt;start();</div></pre></td></tr></table></figure>
-<p>框架中已经良好支持 Swoole HTTP Server 了，通过框架，仅需要简单配置，即可实现 Swoole HTTP Server。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'http://0.0.0.0:9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\HTTPServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
-<p><code>\FastD\Servitization\Server\HTTPServer</code> 作为框架中内置的 HTTP Server，通过命令 <code>php bin/server start</code> 启动 HTTP 服务器。</p>
-<h3 id="TCP-Server"><a href="#TCP-Server" class="headerlink" title="TCP Server"></a>TCP Server</h3><p>在框架中，TCP Server 会在接受到请求后，内部转成HTTP 可解析的数据，转到最终的执行控制器中，因此在编码上，可以实现一套代码，兼容 HTTP，TCP 调用。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'tcp://0.0.0.0:9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\TCPServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
-<h3 id="UDP-Server"><a href="#UDP-Server" class="headerlink" title="UDP Server"></a>UDP Server</h3><p>除了 TCP Server 之外，框架还内置 UDP Server 配置方式和以上一样，调整监听 host，协议即可。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'udp://0.0.0.0:9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\UDPServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
-<h3 id="WebSocket-Server"><a href="#WebSocket-Server" class="headerlink" title="WebSocket Server"></a>WebSocket Server</h3><p>WebSocket Server 配置与其他 Server 配置也一样。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'ws://0.0.0.0:9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\WebSocketServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
-<p>是不是非常简单呢? 心动了? 不如行动一下。</p>
-<p>要是使用过程中遇到问题，可以直接联系我。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1952,7 +1969,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
