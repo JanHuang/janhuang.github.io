@@ -257,6 +257,179 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/09/12/elk/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="黄总">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="// 黄总">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/12/elk/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T10:19:27+08:00">
+                2017-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/12/elk/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/12/elk/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="FastD-最佳实践之五-构建ELK日志监控"><a href="#FastD-最佳实践之五-构建ELK日志监控" class="headerlink" title="FastD 最佳实践之五: 构建ELK日志监控"></a>FastD 最佳实践之五: 构建ELK日志监控</h1><p>过去咱们开发中，对日志这个环节其实并不太重视，直到有一天，应用出现异常，这个时候才想起来“日志”，但很可惜，为时已晚。</p>
+<p>咱们做运维和开发，除了救火，还需要防火，因此一些防范的意识也是非常重要的。</p>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><img src="https://segmentfault.com/img/bVUTma?w=2846&amp;h=1502" alt=""></p>
+<h3 id="安装ELK"><a href="#安装ELK" class="headerlink" title="安装ELK"></a>安装ELK</h3><p>安装 <a href="https://www.elastic.co" target="_blank" rel="external">ELK</a> 是相对简单的，但是后期也需要对其进行优化，适当考虑运维人力，如果觉得个人可以折腾的不放可以尝试。</p>
+<p>如果已经存在 ELK 环境，可以直接跳过，进行框架日志配置环节。</p>
+<p>点击前往: <a href="https://kibana.logstash.es/content/" target="_blank" rel="external">中文地址</a></p>
+<h5 id="先决条件-Java-8"><a href="#先决条件-Java-8" class="headerlink" title="先决条件: Java 8"></a>先决条件: Java 8</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository -y ppa:webupd8team/java</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get -y install oracle-java8-installer</div></pre></td></tr></table></figure>
+<h5 id="简单安装-elasticsearch"><a href="#简单安装-elasticsearch" class="headerlink" title="简单安装 elasticsearch"></a>简单安装 elasticsearch</h5><p>下载地址: <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external">elasticsearch</a></p>
+<p>下载 zip 或者其他都可以。</p>
+<p>解压压缩包。执行:</p>
+<blockquote>
+<p>运行前请配置好系统参数。有一定要求，如果启动失败，仔细留意错误信息，对应调整即可。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bin/elasticsearch</div></pre></td></tr></table></figure>
+<p>验证:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://localhost:9200/</div></pre></td></tr></table></figure>
+<h5 id="安装-kibana"><a href="#安装-kibana" class="headerlink" title="安装 kibana"></a>安装 kibana</h5><p>下载地址: <a href="https://www.elastic.co/downloads/kibana" target="_blank" rel="external">kibana</a></p>
+<p>设置 elasticsearch url 地址，也就是刚才的 localhost:9200 (默认)</p>
+<p>运行: <code>./bin/kibana</code></p>
+<p>打开: <a href="http://localhost:5601" target="_blank" rel="external">http://localhost:5601</a> 访问面板</p>
+<h5 id="安装-logstash"><a href="#安装-logstash" class="headerlink" title="安装 logstash"></a>安装 logstash</h5><p>下载地址: <a href="https://www.elastic.co/downloads/logstash" target="_blank" rel="external">logstash</a></p>
+<p>配置文件: <code>config/logstash.conf</code></p>
+<p>可参照:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">input &#123;</div><div class="line">    file &#123;</div><div class="line">        type =&gt; &quot;fastd&quot;</div><div class="line">        path =&gt; [&quot;log file path&quot;]</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">filter &#123;</div><div class="line">    json &#123;</div><div class="line">        source =&gt; &quot;message&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">output &#123;</div><div class="line">    # stdout &#123; codec =&gt; rubydebug &#125;</div><div class="line">    elasticsearch &#123;</div><div class="line">        action =&gt; &quot;index&quot;</div><div class="line">        hosts =&gt; &quot;127.0.0.1:9200&quot;</div><div class="line">        index =&gt; &quot;fastd&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行: <code>bin/logstash -f config/logstash.conf</code></p>
+<p><code>stdout</code> 作为标准输出，可以通过 <code>stdout { codec =&gt; rubydebug }</code> 对采集数据进行调试。</p>
+<h3 id="处理-php-应用日志-FastD-3-2新特性"><a href="#处理-php-应用日志-FastD-3-2新特性" class="headerlink" title="处理 php 应用日志 (FastD 3.2新特性)"></a>处理 php 应用日志 (FastD 3.2新特性)</h3><p>庆幸我们有这么一个需求，也能将工作经验总结并形成最终的解决方案分享给大家。</p>
+<p><strong>!!3.1 版本处理方案</strong></p>
+<p>新建格式日志文件。然后往下按照步骤进行处理即可(命名空间自定义，添加到日志配置中的第四个参数中)。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">Logger</span>\<span class="title">Formatter</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Monolog</span>\<span class="title">Formatter</span>\<span class="title">LogstashFormatter</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Class StashFormatter.</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">StashFormatter</span> <span class="keyword">extends</span> <span class="title">LogstashFormatter</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">parent</span>::__construct(app()-&gt;getName(), get_local_ip(), <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">self</span>::V1);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>配置 <code>app.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="comment">// code ...</span></div><div class="line">    <span class="string">'log'</span> =&gt; [</div><div class="line">        [</div><div class="line">            \Monolog\Handler\StreamHandler::class,</div><div class="line">            <span class="string">'info.log'</span>,</div><div class="line">            \FastD\Logger\Logger::INFO,</div><div class="line">            \FastD\Logger\Formatter\StashFormatter::class,</div><div class="line">        ],</div><div class="line">    ],</div><div class="line">    <span class="comment">// code ...</span></div><div class="line">];</div></pre></td></tr></table></figure>
+<p>日志会随着配置进行生成，结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;@timestamp&quot;:&quot;2017-09-12T15:47:37.189080+08:00&quot;,&quot;@version&quot;:1,&quot;host&quot;:&quot;10.1.81.60&quot;,&quot;message&quot;:&quot;sprintf(): Too few arguments&quot;,&quot;type&quot;:&quot;fast-d&quot;,&quot;channel&quot;:&quot;fast-d&quot;,&quot;level&quot;:&quot;ERROR&quot;,&quot;msg&quot;:&quot;sprintf(): Too few arguments&quot;,&quot;code&quot;:0,&quot;file&quot;:&quot;/Users/janhuang/Documents/htdocs/me/fastd/fastd/vendor/fastd/routing/src/RouteDispatcher.php&quot;,&quot;line&quot;:78,&quot;trace&quot;:[&quot;#0 [internal function]: FastD\\Application-&gt;FastD\\&#123;closure&#125;(2, &apos;sprintf(): Too ...&apos;, &apos;/Users/janhuang...&apos;, 78, Array)&quot;,&quot;#1 /Users/janhuang/Documents/htdocs/me/fastd/fastd/vendor/fastd/routing/src/RouteDispatcher.php(78): sprintf(&apos;Middleware %s i...&apos;)&quot;,&quot;#2 /Users/janhuang/Documents/htdocs/me/fastd/fastd/vendor/fastd/routing/src/RouteDispatcher.php(60): FastD\\Routing\\RouteDispatcher-&gt;callMiddleware(Object(FastD\\Routing\\Route), Object(FastD\\Http\\ServerRequest))&quot;,&quot;#3 /Users/janhuang/Documents/htdocs/me/fastd/fastd/src/Application.php(142): FastD\\Routing\\RouteDispatcher-&gt;dispatch(Object(FastD\\Http\\ServerRequest))&quot;,&quot;#4 /Users/janhuang/Documents/htdocs/me/fastd/fastd/src/Application.php(205): FastD\\Application-&gt;handleRequest(Object(FastD\\Http\\ServerRequest))&quot;,&quot;#5 /Users/janhuang/Documents/htdocs/me/fastd/fastd/tests/app/web/index.php(15): FastD\\Application-&gt;run()&quot;,&quot;#6 &#123;main&#125;&quot;]&#125;</div></pre></td></tr></table></figure>
+<p><strong>忽略上述日志内容，程序看得懂即可</strong></p>
+<p>配置 logstash 推送到 elasticsearch.</p>
+<p><code>config/logstash.conf</code>, 需要根据业务场景进行配置，现在显示最简单的配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">input &#123;</div><div class="line">    file &#123;</div><div class="line">        type =&gt; &quot;fastd&quot;</div><div class="line">        path =&gt; [&quot;log file path&quot;]</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">filter &#123;</div><div class="line">    json &#123;</div><div class="line">        source =&gt; &quot;message&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">output &#123;</div><div class="line">    elasticsearch &#123;</div><div class="line">        action =&gt; &quot;index&quot;</div><div class="line">        hosts =&gt; &quot;127.0.0.1:9200&quot;</div><div class="line">        index =&gt; &quot;fastd&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>配置无误后，开启日志采集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bin/logstash -f path/to/logstash.conf</div></pre></td></tr></table></figure>
+<p>每当日志刷新新增的时候，agent 就会将日志采集推送到 elasticsearch. 如果觉得 ELK 会有卡顿或者性能问题，可能尝试结合 kafka 进行优化。</p>
+<p>打开: <code>http://127.0.0.1:5601/</code>，即可看到刚才 php 应用产生的日志。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如果 php 应用发生问题，异常而又无法第一时间发现的时候，日志可能是一个很好的切入点，当机器越来越多，应用越来越广泛的时候，日志可能会大量消耗人力，这个时候我们不得不去想办法，一方面解决人力问题，一方面需要提高应用质量。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/08/10/gateway/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1778,148 +1951,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://janhuang.github.io/2017/03/18/monitor/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="黄总">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="// 黄总">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/18/monitor/" itemprop="url">
-                  monitor
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-18T13:29:00+08:00">
-                2017-03-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/18/monitor/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/18/monitor/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>相信大家很多人都用过redis，mysql等相关的服务，只需要客户端连接上去了，就可以执行对应的操作，比如: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">redis &gt; set foo bar</div><div class="line">redis &gt; get foo</div></pre></td></tr></table></figure>
-<p>在框架 FastD 3.1 版本中，已经默认集成，只需要简单配置即可实现操作和管理。因为框架基于swoole，扩展开发，在默认的 fpm 模式下是不会有这种功能实现的，也不现实，更没有必要。</p>
-<p>配置: </p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">    <span class="string">'host'</span> =&gt; <span class="string">'tcp://0.0.0.0:9527'</span>,</div><div class="line">    <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\TCPServer::class,</div><div class="line">    <span class="string">'options'</span> =&gt; [</div><div class="line">        <span class="string">'pid_file'</span> =&gt; <span class="keyword">__DIR__</span> . <span class="string">'/../runtime/pid/'</span> . app()-&gt;getName() . <span class="string">'.pid'</span>,</div><div class="line">        <span class="string">'worker_num'</span> =&gt; <span class="number">10</span>,</div><div class="line">        <span class="string">'task_worker_num'</span> =&gt; <span class="number">20</span>,</div><div class="line">    ],</div><div class="line">    <span class="string">'listeners'</span> =&gt; [</div><div class="line">        [</div><div class="line">            <span class="string">'class'</span> =&gt; \FastD\Servitization\Server\MonitorStatusServer::class,</div><div class="line">            <span class="string">'host'</span> =&gt; <span class="string">'tcp://127.0.0.1:9529'</span>,</div><div class="line">        ],</div><div class="line">    ],</div><div class="line">];</div></pre></td></tr></table></figure>
-<p>通过命令: <code>php bin/console tcp://127.0.0.1:9529</code> </p>
-<p>连接成功后，进入交互界面:</p>
-<p>通过访问具体路由，验证具体方法是否可行，或者可以进行测试，更多的想象，更多的功能，更多的实现。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Continue with this action [get /hello foo:bar] ? get /</div><div class="line">&#123;</div><div class="line">    &quot;foo&quot;: &quot;bar&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>还可以通过监控管理服务，支持部分命令: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">status</div><div class="line">reload</div><div class="line">shutdown</div><div class="line">...</div></pre></td></tr></table></figure>
-<p>更多命令支持，敬请期待。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1969,7 +2000,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
